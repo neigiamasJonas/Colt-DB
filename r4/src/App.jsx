@@ -1,91 +1,144 @@
+import { useState, useEffect } from 'react';
+import './App.scss';
+import Create from './Components/Create';
+import Edit from './Components/Edit';
+import FaultList from './Components/List';
+import ScootersInfo from './Components/ScootersInfo';
+// import ScootersSort from './Components/ScootersSort';
+// import { create, edit, read, remove } from './Functions/LocalStorage';
 
 import axios from 'axios';
-import { useState, useEffect, useReducer } from 'react';
-import './App.scss';
-import sortReducer from './Reducer/sort';
+import ScootersContext from './Components/ScooterContext';
+
 
 function App() {
 
-  const [scoo, setScoo] = useState([]);
+    const [faults, setFaults] = useState(null);
+
+  const [createData, setCreateData] = useState(null);
+  const [deleteData, setDeleteData] = useState(null);
+  const [editData, setEditData] = useState(null);
+  const [modalData, setModalData] = useState(null);
+//   const [scootersSort, setScootersSort] = useState('1');
+//   const [scooterList, setScooterList] = useState(null);
+
+
+
+  // last update component (paskutinio localStorage update laikas), kad atsinaujintu ne po refresh
+  const [lastUpdate, setLastUpdate] = useState(Date.now());
+
+
+
+  ////////////////
+  // READ //
+
 
   useEffect(() => {
+    
     axios.get('http://localhost:3003/scooters')
     .then(res => {
-      setScoo(res.data)
+        setFaults(res.data);
     })
-  }, [scoo])
 
-  const [sort, setSort] = useState('ID')
-  const [scooters, dispachScooters] = useReducer(sortReducer, scoo)
+  }, [lastUpdate]);
 
+
+
+////////////////
+  // CREATE //
 
   useEffect(() => {
-    axios.get('http://localhost:3003/scooters')
+    if (createData === null){
+      return;
+    }
+
+    axios.post('http://localhost:3003/scooters', createData)
     .then(res => {
+        console.log(res.data);
 
-      dispachScooters({type: sort, payload: res.data})
+        setLastUpdate(Date.now()); 
     })
-  })
+    
+  }, [createData]);
 
+
+ //////////////// 
+  // REMOVE //
+
+  useEffect(() => {
+
+    if (deleteData === null) {
+      return;
+    }
+
+    axios.delete('http://localhost:3003/scooters/' + deleteData.id)
+    .then(res => {
+        console.log(res.data);
+
+        setLastUpdate(Date.now()); 
+    })
+
+    
+
+  }, [deleteData])
+
+  ////////////////
+  // EDIT //
+
+  useEffect (() => {
+
+    if (editData === null) {
+      return;
+    }
+
+    axios.put('http://localhost:3003/scooters/' + editData.id, editData)
+    .then(_ => {
+
+        setLastUpdate(Date.now()); 
+
+    })
+
+  }, [editData]);
+
+
+  ////////////////
+  // SORT //
+
+//   useEffect(() => {
+//     localStorage.getItem('ScootersSort') ? setScootersSort(localStorage.getItem('ScootersSort')) : setScootersSort('1');
+
+    
+//   }, [])
 
   return (
-    <div>
-      <h1>FAULT-DB</h1>
-      <select value={sort} onChange={e => setSort(e.target.value)}>
-        <option value="ID">ID</option>
-        <option value="KM">KM</option>
-        <option value="Date">Date</option>
-      </select>
-      <div style={{display: 'flex', flexDirection: 'row'}}>
-        <div>
-          {
-            sort === 'ID' ?         
-                [...scoo].sort((a, b) => (a.id - b.id)).map(a => <ul key={a.id}><b>ID: {a.id}</b>
-                <li>Registration Code: <b>{a.reg_code}</b></li>
-                <li>State: <b>{a.state}</b></li>
-                <li>Km: <b>{a.km}</b> km</li>
-                <li>Last Time Used: <b>{a.date.slice(0, 10)}</b></li>
-                <li>State: <b>{a.busy === 1 ? 'Busy' : 'Free'}</b></li>
-              </ul>)
-              : null
-          }
-                  {
-            sort === 'KM' ?         
-                [...scoo].sort((a, b) => (a.km - b.km)).map(a => <ul key={a.id}><b>ID: {a.id}</b>
-                <li>Registration Code: <b>{a.reg_code}</b></li>
-                <li>State: <b>{a.state}</b></li>
-                <li>Km: <b>{a.km}</b> km</li>
-                <li>Last Time Used: <b>{a.date.slice(0, 10)}</b></li>
-                <li>State: <b>{a.busy === 1 ? 'Busy' : 'Free'}</b></li>
-              </ul>)
-              : null
-          }
-          {
-            sort === 'Date' ?         
-                [...scoo].sort((a, b) => a.date.slice(0, 10).localeCompare(b.date.slice(0, 10))).map(a => <ul key={a.id}><b>ID: {a.id}</b>
-                <li>Registration Code: <b>{a.reg_code}</b></li>
-                <li>State: <b>{a.state}</b></li>
-                <li>Km: <b>{a.km}</b> km</li>
-                <li>Last Time Used: <b>{a.date.slice(0, 10)}</b></li>
-                <li>State: <b>{a.busy === 1 ? 'Busy' : 'Free'}</b></li>
-              </ul>)
-              : null
-          }
-        </div>
-        <div>
+    <ScootersContext.Provider value={
         {
-                scooters.map(a => (
-                <ul key={a.id}><b>ID: {a.id}</b>
-                  <li>Registration Code: <b>{a.reg_code}</b></li>
-                  <li>State: <b>{a.state}</b></li>
-                  <li>Km: <b>{a.km}</b> km</li>
-                  <li>Last Time Used: <b>{a.date.slice(0, 10)}</b></li>
-                  <li>State: <b>{a.busy === 1 ? 'Busy' : 'Free'}</b></li>
-                </ul>))
-          }
+            faults,
+            setCreateData,
+            setDeleteData,
+            setEditData,
+            modalData,
+            setModalData
+
+        }
+    }>
+    <div>
+      <div className='header'><b>"Fault" paspirtuku nuoma</b></div>
+      <div className='container'>
+        <div className='row'>
+          <div className='row-col1'>
+            <Create></Create>
+            {/* <ScootersInfo></ScootersInfo> */}
+          </div>
+          <div className='row-col2'>
+            {/* <ScootersSort></ScootersSort> */}
+            <FaultList></FaultList>
+          </div>
         </div>
       </div>
     </div>
+    {modalData && <Edit></Edit>}
+    </ScootersContext.Provider>
   );
 }
 

@@ -51,3 +51,46 @@ app.get("/scooters", (req, res) => {
 app.listen(port, () => {
   console.log(`Alo - alo, Baločka Jonas klauso - ${port}`)
 })
+
+
+///////////  CREATE  /////////////
+
+app.post("/scooters", (req, res) => {
+  const sql = `
+  INSERT INTO Scooters
+  (reg_code, state, km, date, busy)
+  VALUES(?, ?, ?, ?, ?)
+`;
+  con.query(sql, [req.body.reg_code, req.body.state, req.body.km, req.body.date, req.body.busy], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+    if (err) throw err;   
+    res.send(result);
+  });
+});
+
+///////////  DELETE  /////////////
+
+app.delete("/scooters/:id", (req, res) => {
+  const sql = `
+  DELETE FROM Scooters
+  WHERE id = ?
+`;
+  con.query(sql, [req.params.id], (err, result) => {     
+    if (err) throw err;   
+    res.send(result);
+  });
+});
+
+
+//////////  EDIT /////////////
+
+app.put("/scooters/:id", (req, res) => {
+  const sql = `
+  UPDATE Scooters
+  SET reg_code = ?, state = ?, km = ?, date = ?, busy = ?
+  WHERE id = ?
+`;
+  con.query(sql, [req.body.reg_code, req.body.state, req.body.km, req.body.date, req.body.busy, req.params.id], (err, result) => {   
+    if (err) throw err;   
+    res.send(result);
+  });
+});

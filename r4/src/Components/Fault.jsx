@@ -28,7 +28,7 @@ function Fault({ fault }) {
                     <div className="content-info">
                         <div className="info">
                             <div className="info-item">Kilometers Total: <b>{fault.km} km</b></div>
-                            <div className="info-item">Last time used: <b>{fault.newDate}</b></div>
+                            <div className="info-item">Last time used: <b>{fault.date}</b></div>
                             <div className="info-item">Scooter status: <b>{fault.busy ? 'Busy': 'Free'}</b></div>
                         </div>
                         <div className="content-btn">

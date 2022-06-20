@@ -3,7 +3,7 @@ import './App.scss';
 import Create from './Components/Create';
 import Edit from './Components/Edit';
 import FaultList from './Components/List';
-import ScootersInfo from './Components/ScootersInfo';
+// import ScootersInfo from './Components/ScootersInfo';
 // import ScootersSort from './Components/ScootersSort';
 // import { create, edit, read, remove } from './Functions/LocalStorage';
 

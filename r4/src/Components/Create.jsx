@@ -1,6 +1,6 @@
-import axios from 'axios';
+
 import { useContext } from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import RandomStringID from '../Functions/RandStringID';
 import ScootersContext from './ScooterContext';
@@ -12,11 +12,11 @@ function Create() {
 
     const {setCreateData} = useContext(ScootersContext)
 
-    const [condition, setCondition] = useState("New");
+    const [state, setState] = useState("New");
 
     // data values states
-    const [id, setId] = useState(1);
-    const [regCode, setRegCode] = useState(RandomStringID(8));
+    const [id2, setId2] = useState(1);
+    const [reg_code, setReg_code] = useState(RandomStringID(8));
     const [km, setKm] = useState(0);
     
   
@@ -25,27 +25,29 @@ function Create() {
     // handleCreat po mygtuko paspaudimo istume data i paruoshta masyva
 
     const handleCreate = () => {
-      const data = {regCode, condition, km, busy: 0, newDate: 'Never used before'};
+      const data = {reg_code, state, km, busy: 0, date: 'Not set'};
       
       setCreateData(data);                          // uzsetinu data objekta cia, priestai tai buvo daroma App ir naudojamas propsas setCreateData
       // create(data);
       
   
-      setRegCode(RandomStringID(8));
-      setCondition('New');
-      setKm(null);
+      setReg_code(RandomStringID(8));
+      setState('New');
+      setKm(0);
+
+      setId2('1')
     }
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-      axios.get('http://localhost:3003/scooters')
-      .then(res => {
+    //   axios.get('http://localhost:3003/scooters')
+    //   .then(res => {
 
-        setId(res.id + 1)
-      })
+    //     setId2(res.id + 1)
+    //   })
 
-    }, []);
+    // }, []);
 
 
 
@@ -60,12 +62,12 @@ function Create() {
               <div className='form-group-row'>
                 <div className='form-group'>
                   <label>ID</label>
-                  <input type="text" readOnly value={id} />
+                  <input type="text" readOnly value={id2} />
                   <small>Auto generated</small>
                 </div>
                 <div className='form-group'>
                   <label>Registration Code</label>
-                  <input type="text" readOnly value={regCode} onChange={e => setRegCode(e.target.value)}/>
+                  <input type="text" readOnly value={reg_code} onChange={e => setReg_code(e.target.value)}/>
                   <small>Auto generated</small>
                 </div>
               </div>
@@ -73,7 +75,7 @@ function Create() {
                 <div className='form-group'>
                   <div className='show-group-item'>
                     <label>New or Used</label>
-                    <select value={condition} onChange={e => setCondition(e.target.value)}>
+                    <select value={state} onChange={e => setState(e.target.value)}>
                       <option value="New">New</option>
                       <option value="Used">Used</option>
                     </select>
@@ -81,7 +83,7 @@ function Create() {
                 </div>
                 <div className='form-group'>
                   {
-                    condition === 'Used' && (
+                    state === 'Used' && (
                     <div className='show-group-item' style={{paddingBottom: '17px'}}>
                       <label>Run before (km)</label>
                       <input type="number" value={km} onChange={e => setKm(e.target.value)}></input>

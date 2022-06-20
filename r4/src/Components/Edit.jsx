@@ -15,17 +15,17 @@ function Edit() {
 
     
     /// data constants
-    const [condition, setCondition] = useState("New");
+    const [state, setState] = useState("New");
 
     const [id, setId] = useState(1);
 
-    const [regCode, setRegCode] = useState(RandomStringID);
+    const [reg_code, setReg_code] = useState(RandomStringID);
 
     const [km, setKm] = useState(0);
     const [km2, setKm2] = useState(0);
 
-    const [date, setDate] = useState('0');
-    const [newDate, setNewDate] = useState(data);
+    const [date, setDate] = useState('');
+    const [newdate, setNewdate] = useState(data);
 
     
 
@@ -35,18 +35,18 @@ function Edit() {
             return;
         }
 
-        setCondition(modalData.condition);
+        setState(modalData.state);
         setId(modalData.id);
-        setRegCode(modalData.regCode);
+        setReg_code(modalData.reg_code);
         
 
         setKm(modalData.km);
         setKm2(0)
 
-        setDate(modalData.newDate)
+        setDate('');
 
         const data2 = new Date().toISOString().slice(0, 10)
-        setNewDate(data2)
+        setNewdate(data2)
 
         setBusy(modalData.busy)
 
@@ -55,7 +55,7 @@ function Edit() {
 
 
     const handleEdit = () => {
-        const data = {regCode, condition, km: (+(modalData.km) + +(km2)), date, newDate, busy: busy ? true : false}
+        const data = {id: modalData.id, reg_code, state, km: (+(modalData.km) + +(km2)), date: newdate, busy: busy ? true : false} // 
 
         setEditData(data)
         setModalData(null);  
@@ -63,7 +63,7 @@ function Edit() {
 
 
     
-    if (modalData === null) {
+    if (setModalData === null) {
         return null;
     }
 
@@ -86,20 +86,20 @@ function Edit() {
                         </div>
                         <div className="modal-reg">
                             <label>Reg Code:</label>
-                            <div>{regCode}</div>
+                            <div>{reg_code}</div>
                         </div>
                         <div className='modal-group'>
                             <label>New or Used</label>
-                            <select value={condition} onChange={e => setCondition(e.target.value)}>
+                            <select value={state} onChange={e => setState(e.target.value)}>
                             {
-                                condition === 'New' && <option value="New">New</option>
+                                state === 'New' && <option value="New">New</option>
                             }
                             <option value="Used">Used</option>
                             </select>
                         </div>
                         <div>
                             {
-                            condition === 'Used' && (
+                            state === 'Used' && (
                                 <div className='hidden-group'>
                                     <div className='modal-group'>
                                         <label>Run before (km)</label>
@@ -114,7 +114,7 @@ function Edit() {
                                         </div>
                                         <div className='modal-date'>
                                             <label>New date entry</label>
-                                            <input type="date" value={newDate} onChange={e => setNewDate(e.target.value)}></input>
+                                            <input type="date" value={newdate} onChange={e => setNewdate(e.target.value)}></input>
                                         </div>
                                     </div>
                                     <div className='checkbox'>

@@ -6,6 +6,8 @@ function FaultList() {
 
     const {faults} = useContext(ScootersContext);
 
+    
+
     return (
     <>
         <div className='col2 column'>

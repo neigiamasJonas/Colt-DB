@@ -3,24 +3,27 @@ import './App.scss';
 import Create from './Components/Create';
 import Edit from './Components/Edit';
 import FaultList from './Components/List';
-// import ScootersInfo from './Components/ScootersInfo';
-// import ScootersSort from './Components/ScootersSort';
+import ScootersInfo from './Components/ScootersInfo';
+import ScootersSort from './Components/ScootersSort';
 // import { create, edit, read, remove } from './Functions/LocalStorage';
 
 import axios from 'axios';
 import ScootersContext from './Components/ScooterContext';
+// import { useReducer } from 'react';
+// import sortReducer from './Reducer/sort';
 
 
 function App() {
 
     const [faults, setFaults] = useState(null);
+    
 
   const [createData, setCreateData] = useState(null);
   const [deleteData, setDeleteData] = useState(null);
   const [editData, setEditData] = useState(null);
   const [modalData, setModalData] = useState(null);
-//   const [scootersSort, setScootersSort] = useState('1');
-//   const [scooterList, setScooterList] = useState(null);
+  const [scooterSort, setScooterSort] = useState('1');
+  // const [scooters, dispachScooters] = useReducer(sortReducer, scooterSort)
 
 
 
@@ -38,6 +41,7 @@ function App() {
     axios.get('http://localhost:3003/scooters')
     .then(res => {
         setFaults(res.data);
+
     })
 
   }, [lastUpdate]);
@@ -53,8 +57,8 @@ function App() {
     }
 
     axios.post('http://localhost:3003/scooters', createData)
-    .then(res => {
-        console.log(res.data);
+    .then(_ => {
+        
 
         setLastUpdate(Date.now()); 
     })
@@ -73,7 +77,7 @@ function App() {
 
     axios.delete('http://localhost:3003/scooters/' + deleteData.id)
     .then(res => {
-        console.log(res.data);
+        
 
         setLastUpdate(Date.now()); 
     })
@@ -104,6 +108,9 @@ function App() {
   ////////////////
   // SORT //
 
+
+
+
 //   useEffect(() => {
 //     localStorage.getItem('ScootersSort') ? setScootersSort(localStorage.getItem('ScootersSort')) : setScootersSort('1');
 
@@ -118,8 +125,10 @@ function App() {
             setDeleteData,
             setEditData,
             modalData,
-            setModalData
-
+            setModalData,
+            scooterSort, 
+            setScooterSort
+          
         }
     }>
     <div>
@@ -128,10 +137,10 @@ function App() {
         <div className='row'>
           <div className='row-col1'>
             <Create></Create>
-            {/* <ScootersInfo></ScootersInfo> */}
+            <ScootersInfo></ScootersInfo>
           </div>
           <div className='row-col2'>
-            {/* <ScootersSort></ScootersSort> */}
+            <ScootersSort></ScootersSort>
             <FaultList></FaultList>
           </div>
         </div>

@@ -1,30 +1,30 @@
-// function sortReducer(state, action) {
+function sortReducer(state, action) {
 
-//     let newState;
+    let newState;
 
-//     switch(action.type) {
+    switch(action.type) {
 
-//         case "ID":
-//             newState = action.payload.sort((a, b) => (a.id - b.id))
+        case "ID":
+            newState = action.payload.sort((a, b) => (a.id - b.id))
 
-//             break;
+            break;
 
-//         case "KM":
-//             newState = action.payload.sort((a, b) => (a.km - b.km))
+        case "KM":
+            newState = action.payload.sort((a, b) => (a.km - b.km))
     
-//             break;
+            break;
 
-//         case "Date":
-//             newState = action.payload.sort((a, b) => a.date.localeCompare(b.date))
+        case "Date":
+            newState = action.payload.sort((a, b) => a.date.localeCompare(b.date))
         
-//             break;
+            break;
 
-//         default:
-//             newState = [...state]
-//     }
+        default:
+            newState = [...state]
+    }
 
 
-//     return newState
-// }
+    return newState
+}
 
-// export default sortReducer;
+export default sortReducer;

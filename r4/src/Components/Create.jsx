@@ -1,6 +1,7 @@
 
 import { useContext } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import RandomStringID from '../Functions/RandStringID';
 import ScootersContext from './ScooterContext';
@@ -35,19 +36,21 @@ function Create() {
       setState('New');
       setKm(0);
 
-      setId2('1')
+      
     }
 
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //   axios.get('http://localhost:3003/scooters')
-    //   .then(res => {
+      axios.get('http://localhost:3003/scooters')
+      .then(res => {
 
-    //     setId2(res.id + 1)
-    //   })
+        setId2(res.data.length)
 
-    // }, []);
+    
+      })
+
+    });
 
 
 

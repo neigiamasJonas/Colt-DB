@@ -1,13 +1,15 @@
 // import axios from "axios";
 // import { useReducer } from "react";
 // import { useEffect } from "react";
+// import { useState } from "react";
 import { useContext } from "react";
-
 import ScootersContext from "./ScooterContext";
 
 function ScootersSort() {
 
     const {scooterSort, setScooterSort} = useContext(ScootersContext)
+
+    // const [scooterSort, setScooterSort] = useState('1')
 
 
 

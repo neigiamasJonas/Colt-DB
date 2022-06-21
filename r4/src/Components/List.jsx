@@ -4,9 +4,9 @@ import ScootersContext from "./ScooterContext";
 
 function FaultList() {
 
-    const {faults} = useContext(ScootersContext);
+    const {scooters} = useContext(ScootersContext);
 
-    
+    console.log(scooters)
 
     return (
     <>
@@ -17,7 +17,7 @@ function FaultList() {
             <div className='card-body'>
                 <ul className="ul">
                     {
-                    faults !== null ? [...faults].map(fault => <Fault key={fault.id} fault={fault}></Fault>) : null
+                    scooters.map(fault => <Fault key={fault.id} fault={fault}></Fault>) 
                     }
 
                 </ul>

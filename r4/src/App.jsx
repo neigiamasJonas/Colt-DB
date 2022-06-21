@@ -9,8 +9,8 @@ import ScootersSort from './Components/ScootersSort';
 
 import axios from 'axios';
 import ScootersContext from './Components/ScooterContext';
-// import { useReducer } from 'react';
-// import sortReducer from './Reducer/sort';
+import { useReducer } from 'react';
+import sortReducer from './Reducer/sort';
 
 
 function App() {
@@ -22,8 +22,10 @@ function App() {
   const [deleteData, setDeleteData] = useState(null);
   const [editData, setEditData] = useState(null);
   const [modalData, setModalData] = useState(null);
-  const [scooterSort, setScooterSort] = useState('1');
-  // const [scooters, dispachScooters] = useReducer(sortReducer, scooterSort)
+  const [scooterSort, setScooterSort] = useState('0');
+
+  // SORTINGAS
+  const [scooters, dispachScooters] = useReducer(sortReducer, [])
 
 
 
@@ -40,7 +42,9 @@ function App() {
     
     axios.get('http://localhost:3003/scooters')
     .then(res => {
-        setFaults(res.data);
+     
+
+        dispachScooters({ payload: res.data})
 
     })
 
@@ -108,14 +112,27 @@ function App() {
   ////////////////
   // SORT //
 
+  useEffect(() => {
 
 
+     if (scooterSort !=0) {  
+      console.log('hey')
+      dispachScooters({type: scooterSort})
+     }
+
+  }, [scooterSort])
 
 //   useEffect(() => {
-//     localStorage.getItem('ScootersSort') ? setScootersSort(localStorage.getItem('ScootersSort')) : setScootersSort('1');
 
-    
-//   }, [])
+
+//     if (scooters.length >0) {  
+//      setFaults(scooters)
+//     }
+
+//  }, [scooters])
+
+ 
+
 
   return (
     <ScootersContext.Provider value={
@@ -127,8 +144,8 @@ function App() {
             modalData,
             setModalData,
             scooterSort, 
-            setScooterSort
-          
+            setScooterSort,
+            scooters
         }
     }>
     <div>

@@ -22,7 +22,7 @@ function App() {
   const [deleteData, setDeleteData] = useState(null);
   const [editData, setEditData] = useState(null);
   const [modalData, setModalData] = useState(null);
-  const [scooterSort, setScooterSort] = useState('0');
+  const [scooterSort, setScooterSort] = useState('1');
 
   // SORTINGAS
   const [scooters, dispachScooters] = useReducer(sortReducer, [])
@@ -43,7 +43,7 @@ function App() {
     axios.get('http://localhost:3003/scooters')
     .then(res => {
      
-
+        setFaults(res.data)
         dispachScooters({ payload: res.data})
 
     })
@@ -80,7 +80,7 @@ function App() {
     }
 
     axios.delete('http://localhost:3003/scooters/' + deleteData.id)
-    .then(res => {
+    .then(_ => {
         
 
         setLastUpdate(Date.now()); 
@@ -114,24 +114,10 @@ function App() {
 
   useEffect(() => {
 
-
-     if (scooterSort !=0) {  
-      console.log('hey')
-      dispachScooters({type: scooterSort})
-     }
-
+    dispachScooters({type: scooterSort})
+     
   }, [scooterSort])
 
-//   useEffect(() => {
-
-
-//     if (scooters.length >0) {  
-//      setFaults(scooters)
-//     }
-
-//  }, [scooters])
-
- 
 
 
   return (

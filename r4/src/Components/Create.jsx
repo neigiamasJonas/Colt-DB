@@ -20,8 +20,18 @@ function Create() {
     const [reg_code, setReg_code] = useState(RandomStringID(8));
     const [km, setKm] = useState(0);
     
-  
-   
+    
+    // geting lastID
+    useEffect(() => {
+
+      axios.get('http://localhost:3003/scooters')
+      .then(res => {
+
+        const lastID = res.data[res.data.length - 1].id
+        setId2(lastID + 1)
+      })
+
+    }, []);
     
     // handleCreat po mygtuko paspaudimo istume data i paruoshta masyva
 
@@ -36,24 +46,9 @@ function Create() {
       setState('New');
       setKm(0);
 
+      setId2(id2 + 1)
       
     }
-
-
-    useEffect(() => {
-
-      axios.get('http://localhost:3003/scooters')
-      .then(res => {
-
-        setId2(res.data.length)
-
-    
-      })
-
-    });
-
-
-
 
 
     return (

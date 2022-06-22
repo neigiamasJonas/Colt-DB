@@ -23,7 +23,7 @@ function Fault({ fault }) {
                     <div className="id-reg">
                         <div>ID: <b>{fault.id}</b></div>
                         <div>Registration Code: <b>{fault.reg_code}</b></div>
-                        <div>Condition: <b>{fault.condition}</b></div>
+                        <div>Condition: <b>{fault.state}</b></div>
                     </div>
                     <div className="content-info">
                         <div className="info">

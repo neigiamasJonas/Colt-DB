@@ -1,10 +1,7 @@
 function sortReducer(state, action) {
 
     let newState;
-console.log(action.payload)
 
-console.log(action.type)
-console.log(state)
     switch(action.type) {
 
         case "1":
@@ -13,7 +10,7 @@ console.log(state)
             break;
 
         case "2":
-            newState = [...state].sort((a, b) => (a.km - b.km))
+            newState = [...state].sort((a, b) => (b.km - a.km))
     
             break;
 
@@ -26,7 +23,7 @@ console.log(state)
             newState = [...action.payload]
     }
 
-console.log(newState)
+
     return newState
 }
 

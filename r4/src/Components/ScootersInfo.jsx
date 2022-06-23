@@ -9,10 +9,10 @@ function ScootersInfo() {
     return(
         <>
             <div className="column">
-                <div className="h3">
-                    <h3>Scooters Data</h3>
+                <div className="h3" >
+                    <h3 style={{margin: "5px"}}>Scooters Data</h3>
                 </div>
-                <div className="card-body">
+                <div className="card-body" style={{padding: "10px 20px"}}>
                     <div className="info-item">
                         <div>Scooters count: </div>
                         <div><b>

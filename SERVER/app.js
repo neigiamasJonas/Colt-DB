@@ -34,13 +34,15 @@ app.get('/zuikis', (req, res) => {
 
 
 //////////////////////////////////////////
-//////////  Fault is MARIJA DB  //////////
+//////////  READ ////////// + LEFT JOIN
 
 app.get("/scooters", (req, res) => {
     const sql = `
     SELECT
-    *
-    FROM Scooters
+    sc.color_title AS color, reg_code, state, km, date, busy, s.id
+    FROM Scooters AS s
+    LEFT JOIN Scooters_color AS sc
+    ON s.color_id = sc.id
   `;
     con.query(sql, (err, result) => {
       if (err) throw err;
@@ -53,7 +55,7 @@ app.listen(port, () => {
 })
 
 
-///////////  CREATE  /////////////
+///////////  CREATE  Scooters /////////////
 
 app.post("/scooters", (req, res) => {
   const sql = `
@@ -67,7 +69,23 @@ app.post("/scooters", (req, res) => {
   });
 });
 
-///////////  DELETE  /////////////
+
+///////////  CREATE  Scooters_color /////////////
+
+app.post("/scooters_color", (req, res) => {
+  const sql = `
+  INSERT INTO Scooters_color
+  (color_title)
+  VALUES(?)
+`;
+  con.query(sql, [req.body.color_title], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+    if (err) throw err;   
+    res.send(result);
+  });
+});
+
+
+///////////  DELETE  Scooters /////////////
 
 app.delete("/scooters/:id", (req, res) => {
   const sql = `
@@ -81,15 +99,30 @@ app.delete("/scooters/:id", (req, res) => {
 });
 
 
-//////////  EDIT /////////////
+///////////  DELETE  Scooters_color /////////////
+
+app.delete("/scooters_color/:id", (req, res) => {
+  const sql = `
+  DELETE FROM Scooters_color
+  WHERE id = ?
+`;
+  con.query(sql, [req.params.id], (err, result) => {     
+    if (err) throw err;   
+    res.send(result);
+  });
+});
+
+
+
+//////////  EDIT + EDIT color  /////////////
 
 app.put("/scooters/:id", (req, res) => {
   const sql = `
   UPDATE Scooters
-  SET reg_code = ?, state = ?, km = ?, date = ?, busy = ?
+  SET reg_code = ?, state = ?, km = ?, date = ?, busy = ?, color_id = ?
   WHERE id = ?
 `;
-  con.query(sql, [req.body.reg_code, req.body.state, req.body.km, req.body.date, req.body.busy, req.params.id], (err, result) => {   
+  con.query(sql, [req.body.reg_code, req.body.state, req.body.km, req.body.date, req.body.busy, req.body.color_id, req.params.id], (err, result) => {   
     if (err) throw err;   
     res.send(result);
   });

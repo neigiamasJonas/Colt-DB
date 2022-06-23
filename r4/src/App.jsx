@@ -11,12 +11,16 @@ import axios from 'axios';
 import ScootersContext from './Components/ScooterContext';
 import { useReducer } from 'react';
 import sortReducer from './Reducer/sort';
+import ColorContext from './Components/ColorComponenet/ColorContext';
+import CreateColor from './Components/ColorComponenet/CreateColor';
+import ColorList from './Components/ColorComponenet/ListColor';
 
 
 function App() {
 
     const [faults, setFaults] = useState(null);
     
+  /// SCOOTERS
 
   const [createData, setCreateData] = useState(null);
   const [deleteData, setDeleteData] = useState(null);
@@ -24,10 +28,17 @@ function App() {
   const [modalData, setModalData] = useState(null);
   const [scooterSort, setScooterSort] = useState('1');
 
+  /// COLORS
+
+  const [colors, setColors] = useState(null);
+  const [createDataColors, setCreateDataColors] = useState(null);
+  const [deleteDataColors, setDeleteDataColors] = useState(null);
+
+
+
+
   // SORTINGAS
   const [scooters, dispachScooters] = useReducer(sortReducer, [])
-
-
 
   // last update component (paskutinio localStorage update laikas), kad atsinaujintu ne po refresh
   const [lastUpdate, setLastUpdate] = useState(Date.now());
@@ -119,6 +130,48 @@ function App() {
   }, [scooterSort])
 
 
+/////////////////////////////////////////////////////////
+//////////////  Scooters_color   ////////////////////////
+
+// CREATE // 
+
+  useEffect(() => {
+    if (null === createDataColors) return;
+    axios.post('http://localhost:3003/scooters_color', createDataColors)
+      .then(_ => {
+        
+        setLastUpdate(Date.now());
+      })
+
+  }, [createDataColors]);
+
+  // READ //
+
+    useEffect(() => {
+      axios.get('http://localhost:3003/scooters_color')
+        .then(res => {
+          console.log(res.data);
+          setColors(res.data)});
+    }, [lastUpdate]);
+  
+  
+  // DELETE //
+
+    useEffect(() => {
+      if (null === deleteDataColors) {
+          return;
+      }
+  
+      axios.delete('http://localhost:3003/scooters_color/' + deleteDataColors.id) /// PAKEITIMAS medukai/', + deleteData.id)  BUTINAI SLASH PRIESH MEDUKUS
+      .then(res => {
+          console.log(res.data);
+  
+          setLastUpdate(Date.now());
+      })
+  
+    }, [deleteDataColors]);
+
+
 
   return (
     <ScootersContext.Provider value={
@@ -134,22 +187,32 @@ function App() {
             scooters
         }
     }>
-    <div>
-      <div className='header'><b>"Fault" paspirtuku nuoma</b></div>
-      <div className='container'>
-        <div className='row'>
-          <div className='row-col1'>
-            <Create></Create>
-            <ScootersInfo></ScootersInfo>
-          </div>
-          <div className='row-col2'>
-            <ScootersSort></ScootersSort>
-            <FaultList></FaultList>
+        <ColorContext.Provider value={
+          {
+            colors,
+            setCreateData: setCreateDataColors,
+            setDeleteData: setDeleteDataColors
+          }
+        }>
+      <div>
+        <div className='header'><b>"Fault" paspirtuku nuoma</b></div>
+        <div className='container'>
+          <div className='row'>
+            <div className='row-col1'>
+              <ScootersInfo></ScootersInfo>
+              <Create></Create>
+              <CreateColor></CreateColor>
+              <ColorList></ColorList>
+            </div>
+            <div className='row-col2'>
+              <ScootersSort></ScootersSort>
+              <FaultList></FaultList>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    {modalData && <Edit></Edit>}
+      {modalData && <Edit></Edit>}
+      </ColorContext.Provider>
     </ScootersContext.Provider>
   );
 }

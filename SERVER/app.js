@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3003;
+const port = 3005;
 
 /// Isikopinta
 const cors = require("cors");
@@ -34,7 +34,7 @@ app.get('/zuikis', (req, res) => {
 
 
 //////////////////////////////////////////
-//////////  READ ////////// + LEFT JOIN
+//////////  READ SCOOTERS ////////// + LEFT JOIN
 
 app.get("/scooters", (req, res) => {
     const sql = `
@@ -55,15 +55,35 @@ app.listen(port, () => {
 })
 
 
+//////////  READ SCOOTERS_COLOR ////////// + RIGHT JOIN
+
+app.get("/scooters_color", (req, res) => {
+  const sql = `
+  SELECT
+  sc.color_title, sc.id, COUNT(s.id) AS scooter_count
+  FROM Scooters AS s
+  RIGHT JOIN Scooters_color AS sc                  
+  ON s.color_id = sc.id
+  GROUP BY sc.id
+  ORDER BY COUNT(s.id) DESC
+`;
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+
+
 ///////////  CREATE  Scooters /////////////
 
 app.post("/scooters", (req, res) => {
   const sql = `
   INSERT INTO Scooters
-  (reg_code, state, km, date, busy)
-  VALUES(?, ?, ?, ?, ?)
+  (reg_code, state, km, date, busy, color_id)
+  VALUES(?, ?, ?, ?, ?, ?)
 `;
-  con.query(sql, [req.body.reg_code, req.body.state, req.body.km, req.body.date, req.body.busy], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+  con.query(sql, [req.body.reg_code, req.body.state, req.body.km, req.body.date, req.body.busy, req.body.color !== '0' ? req.body.color : null], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
     if (err) throw err;   
     res.send(result);
   });

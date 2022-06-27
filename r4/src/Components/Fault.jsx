@@ -12,6 +12,7 @@ function Fault({ fault }) {
 
     const handleEdit = () => {
         setModalData(fault)
+        // console.log(fault);
     }
 
 
@@ -30,6 +31,7 @@ function Fault({ fault }) {
                             <div className="info-item">Kilometers Total: <b>{fault.km} km</b></div>
                             <div className="info-item">Last time used: <b>{fault.date}</b></div>
                             <div className="info-item">Scooter status: <b>{fault.busy ? 'Busy': 'Free'}</b></div>
+                            <div className="info-item">Scooter Color: <b>{fault.color}</b></div>
                         </div>
                         <div className="content-btn">
                             <button type="button" className="btn btn1" onClick={handleEdit}>Edit</button>

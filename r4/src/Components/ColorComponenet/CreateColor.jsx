@@ -7,14 +7,14 @@ function CreateColor() {
 
     const {setCreateData} = useContext(ColorContext)
 
-    const [colorTitle, setColorTitle] = useState("");
+    const [color_title, setColor_title] = useState("");
 
 
     const handleCreate = () => {
-      const data = {colorTitle};
+      const data = {color_title};
       
       setCreateData(data);
-      setColorTitle("")
+      setColor_title("")
       
     }
 
@@ -27,7 +27,7 @@ function CreateColor() {
               <div className='form-group-row'>
                 <div className='form-group'>
                   <label>Color Title</label>
-                  <input type="text" value={colorTitle} onChange={e => setColorTitle(e.target.value)}/>
+                  <input type="text" value={color_title} onChange={e => setColor_title(e.target.value)}/>
                   <small>Enter color title here</small>
                 </div>
               </div>

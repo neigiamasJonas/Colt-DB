@@ -5,7 +5,7 @@ import ScootersContext from './ScooterContext';
 
 function Edit() {
 
-    const {modalData, setModalData, setEditData} = useContext(ScootersContext);
+    const {modalData, setModalData, setEditData, colors} = useContext(ScootersContext);
 
     /// today's date
     const data = new Date().toISOString().slice(0, 10)
@@ -27,6 +27,9 @@ function Edit() {
     const [date, setDate] = useState('');
     const [newdate, setNewdate] = useState(data);
 
+    /// colors
+
+    const [color, setColor] = useState('0');
     
 
 
@@ -50,15 +53,21 @@ function Edit() {
 
         setBusy(modalData.busy)
 
+        setColor(colors.filter(g => modalData.color === g.color_title)[0]?.id ?? 0);
+        
+        // console.log(colors);
+        // console.log(modalData);
 
     }, [modalData]);
 
 
     const handleEdit = () => {
-        const data = {id: modalData.id, reg_code, state, km: (+(modalData.km) + +(km2)), date: newdate, busy: busy ? true : false} // 
+        const data = {id: modalData.id, reg_code, state, km: (+(modalData.km) + +(km2)), date: newdate, busy: busy ? true : false, color_id: color} // 
 
         setEditData(data)
         setModalData(null);  
+        // console.log(data);
+        // console.log(colors);
     }
 
 
@@ -87,6 +96,15 @@ function Edit() {
                         <div className="modal-reg">
                             <label>Reg Code:</label>
                             <div>{reg_code}</div>
+                        </div>
+                        <div className='modal-group'>
+                            <label>Color</label>
+                            <select value={color} onChange={e => setColor(e.target.value)}>
+                                <option value="0" disabled>Select Color</option>
+                            {
+                                colors === null ? null : colors.map(c => <option key={c.id} value={c.id}>{c.color_title}</option>)
+                            }
+                            </select>
                         </div>
                         <div className='modal-group'>
                             <label>New or Used</label>

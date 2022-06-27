@@ -392,6 +392,9 @@ body {
 .info-item {
     display: flex;
     justify-content: space-between;
+    b {
+        margin-left: 5px;
+    }
 }
 
 

@@ -24,7 +24,7 @@ function Create() {
     // geting lastID
     useEffect(() => {
 
-      axios.get('http://localhost:3003/scooters')
+      axios.get('http://localhost:3005/scooters')
       .then(res => {
 
         const lastID = res.data[res.data.length - 1].id

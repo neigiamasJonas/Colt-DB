@@ -51,7 +51,7 @@ function App() {
 
   useEffect(() => {
     
-    axios.get('http://localhost:3003/scooters')
+    axios.get('http://localhost:3005/scooters')
     .then(res => {
      
         setFaults(res.data)
@@ -71,7 +71,7 @@ function App() {
       return;
     }
 
-    axios.post('http://localhost:3003/scooters', createData)
+    axios.post('http://localhost:3005/scooters', createData)
     .then(_ => {
         
 
@@ -90,7 +90,7 @@ function App() {
       return;
     }
 
-    axios.delete('http://localhost:3003/scooters/' + deleteData.id)
+    axios.delete('http://localhost:3005/scooters/' + deleteData.id)
     .then(_ => {
         
 
@@ -110,9 +110,9 @@ function App() {
       return;
     }
 
-    axios.put('http://localhost:3003/scooters/' + editData.id, editData)
+    axios.put('http://localhost:3005/scooters/' + editData.id, editData)
     .then(_ => {
-
+console.log(editData)
         setLastUpdate(Date.now()); 
 
     })
@@ -137,7 +137,7 @@ function App() {
 
   useEffect(() => {
     if (null === createDataColors) return;
-    axios.post('http://localhost:3003/scooters_color', createDataColors)
+    axios.post('http://localhost:3005/scooters_color', createDataColors)
       .then(_ => {
         
         setLastUpdate(Date.now());
@@ -148,9 +148,9 @@ function App() {
   // READ //
 
     useEffect(() => {
-      axios.get('http://localhost:3003/scooters_color')
+      axios.get('http://localhost:3005/scooters_color')
         .then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           setColors(res.data)});
     }, [lastUpdate]);
   
@@ -162,7 +162,7 @@ function App() {
           return;
       }
   
-      axios.delete('http://localhost:3003/scooters_color/' + deleteDataColors.id) /// PAKEITIMAS medukai/', + deleteData.id)  BUTINAI SLASH PRIESH MEDUKUS
+      axios.delete('http://localhost:3005/Scooters_color/' + deleteDataColors.id) /// PAKEITIMAS medukai/', + deleteData.id)  BUTINAI SLASH PRIESH MEDUKUS
       .then(res => {
           console.log(res.data);
   
@@ -184,7 +184,8 @@ function App() {
             setModalData,
             scooterSort, 
             setScooterSort,
-            scooters
+            scooters,
+            colors
         }
     }>
         <ColorContext.Provider value={

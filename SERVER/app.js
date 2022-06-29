@@ -147,3 +147,75 @@ app.put("/scooters/:id", (req, res) => {
     res.send(result);
   });
 });
+
+////////////////////////////////////////////
+
+//////////  FRONT SCOOTERS  ////////////////
+
+app.get("/front/scooters", (req, res) => {
+  const sql = `
+  SELECT
+  sc.color_title AS color, reg_code, state, km, date, busy, s.id, GROUP_CONCAT(s.reg_code)
+  FROM Scooters AS s
+  RIGHT JOIN Scooters_color AS sc
+  ON s.color_id = sc.id
+  GROUP BY sc.id
+ 
+`;
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+//////////  USERS  ////////////////
+
+app.post("/front/users", (req, res) => {
+  const sql = `
+  INSERT INTO Scooter_users
+  (user_name, scooter_id)
+  VALUES(?, ?)
+
+`;
+  con.query(sql, [req.body.user_name, req.body.scooter_id], (err, result) => {     // !!! tarp sql ir(err,result) IDEDU !!!! masyva [req.body.type, req.body.title, req.body.height]
+    if (err) throw err;   
+    res.send({result, msg: {text: 'New object created', type: 'success'}});
+  });
+});
+
+
+////////////////////////////////////////////
+
+//////////  BACK SCOOTERS  ////////////////
+
+app.get("/back/scooters", (req, res) => {
+  const sql = `
+  SELECT
+  sc.color_title AS color, reg_code, state, km, date, busy, s.id, GROUP_CONCAT(user.user_name, '-^o^-') AS users
+  FROM Scooters AS s
+  LEFT JOIN Scooters_color AS sc
+  ON s.color_id = sc.id
+  LEFT JOIN Scooter_users AS user
+  ON user.scooter_id = s.id
+  GROUP BY s.id
+`;
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+app.listen(port, () => {
+console.log(`Alo - alo, Baločka Jonas klauso - ${port}`)
+})

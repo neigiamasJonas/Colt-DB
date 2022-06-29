@@ -3,7 +3,7 @@ import ScootersContext from "./ScooterContext";
 
 function Fault({ fault }) {
 
-    const {setDeleteData, setModalData} = useContext(ScootersContext);
+    const {setDeleteData, setModalData, setModalDataUsers} = useContext(ScootersContext);
 
     
     const handleDelete = () => {
@@ -13,6 +13,11 @@ function Fault({ fault }) {
     const handleEdit = () => {
         setModalData(fault)
         // console.log(fault);
+    }
+
+    const handleEditUsers = () => {
+        setModalDataUsers(fault)
+
     }
 
 
@@ -36,7 +41,11 @@ function Fault({ fault }) {
                         <div className="content-btn">
                             <button type="button" className="btn btn1" onClick={handleEdit}>Edit</button>
                             <button type="button" className="btn btn2" onClick={handleDelete}>Delete</button>
+                            <div className="user-btn">
+                                <button type="button" className="btn btn1" onClick={handleEditUsers}>See Users</button>
+                            </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>

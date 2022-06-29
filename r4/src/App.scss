@@ -187,6 +187,7 @@ body {
                 padding: 5px 10px;
                 font-size: 12px;
                 font-weight: 400;
+                min-height: 60px;
 
                 // .info {
                 //     display: flex;
@@ -200,6 +201,18 @@ body {
 
     }
 }    
+
+.content-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+    border-bottom: 2px solid #777;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 400;
+    min-height: 60px;
+}
     
 .info {
     display: flex;
@@ -213,7 +226,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    flex-wrap: wrap;
+    gap: 7px;
+    height: 40px;
+    margin-top: 6px;
+    max-width: 120px;
 
 }
 
@@ -231,11 +248,14 @@ body {
 
 .modal {
     position: fixed;
+    display: flex;
+    
+    
     top: 8%;
-    bottom: 14%;
+    bottom: 5%;
     left: 30%;
     right: 30%;
-    
+    // padding: 0px 20px;
     background-color: #fff;
     
 }
@@ -243,6 +263,8 @@ body {
 .modal-box {
     display: flex;
     height: 100%;
+    width: 100%;
+    
     background-color: rgb(225, 225, 225);
 }
 
@@ -411,7 +433,16 @@ body {
 }
 
 
+//////////  USERS
 
+.user-btn {
+    display: flex;
+    flex-direction: column;
+    button {
+        height: 22px;
+        width: 80px;
+    }
+}
 
 //// MEDIA@
 @media (max-width: 1200px){
@@ -534,6 +565,35 @@ body {
         right: 20%;
     }
 
+    .content-btn {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 7px;
+        height: 40px;
+        margin-top: 6px;
+        max-width: 200px;
+    
+    }
+
+    .content-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        
+        
+    }
+
+
+}
+
+@media (max-width: 390px) {
+    .content-btn {
+        gap: 2px;
+    }
 }
 
 @media (max-width: 340px) {
@@ -546,5 +606,10 @@ body {
     .modal {
         left: 0%;
         right: 14.5%;
+    }
+
+    .list-group-item {
+        min-height: 200px;
+        
     }
 }
